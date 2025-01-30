@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const AIRequestDB =require('../models/AiChatRequests');
+const AiService = require('../services/AiService');
 
 exports.getProfile = async (req, res) => {
     try {
@@ -477,6 +479,41 @@ exports.getScratching = async (req, res) => {
         }
 
         res.status(200).json({ scratching: user.scratching });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error });
+    }
+};
+
+exports.getAiChatSuggestions = async (req, res) => {
+    try {
+        /**
+         * Chat data should be in the following format:
+         * {
+         *  message: 'Prompt message',
+         *  chatlog: [
+         *     { sender: 'Sender', message: 'Hello' },
+         *     { sender: 'User', message: 'Hi there! How can I help you'},
+         *    ]
+         * }
+         */
+        const chatData = req.body;
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (AIRequestDB.findOne({userId: req.user.id})) {
+            return res.status(400).json({ message: 'Wait for 10 seconds beore requesting again' });
+        }
+
+        AIRequestDB.create({userId: req.user.id});
+        
+        const prompt = chatData.message;
+        const response = await AiService.GenerateAiResponse(prompt, chatData.chatlog);
+
+        res.status(200).json({ response });
 
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error });
