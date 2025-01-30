@@ -12,3 +12,5 @@ const GenerateAiResponse = async (prompt, chatData) => {
         throw error;
     }
 }
+
+module.exports = GenerateAiResponse;
