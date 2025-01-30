@@ -1,4 +1,4 @@
-const { getProfile, updateProfile, followUser, unfollowUser, getFollowers, getFollowing, searchUsers, removeFollower, getFeed, acceptFollowRequest, rejectFollowRequest, getFollowRequests, sendFollowRequest, cancelFollowRequest, uploadProfilePic, getSelfProfile } = require('../controllers/userController');
+const { getProfile, updateProfile, followUser, unfollowUser, getFollowers, getFollowing, searchUsers, removeFollower, getFeed, acceptFollowRequest, rejectFollowRequest, getFollowRequests, sendFollowRequest, cancelFollowRequest, uploadProfilePic, getSelfProfile, scratchUser, unscratchUser, getScratchers, getScratching, getAiChatSuggestions } = require('../controllers/userController');
 const express = require('express');
 const { protect } = require('../middleware/auth');
 const router = express.Router();
@@ -19,5 +19,10 @@ router.put('/sendFollowRequest/:id', protect, sendFollowRequest);
 router.put('/cancelFollowRequest/:id', protect, cancelFollowRequest);
 router.post('/uploadProfilePic', protect, uploadProfilePic);
 router.get('/selfProfile', protect, getSelfProfile);
+router.put('/scratch/:id', protect, scratchUser);
+router.put('/unscratch/:id', protect, unscratchUser);
+router.get('/scratchers/:id', getScratchers);
+router.get('/scratching/:id', getScratching);
+router.get('/aiChatSuggestions', protect, getAiChatSuggestions);
 
 module.exports = router;
