@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   emailVerified: { type: Boolean, default: false },
   emailVerificationToken: { type: String },
+  onlineStatus: { type: Boolean },
+  lastOnline: { type: String },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
