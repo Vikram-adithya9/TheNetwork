@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  blocked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  blacklist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   gender: { type: String, enum: ['Male', 'Female'], required: true },
