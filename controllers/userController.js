@@ -519,3 +519,53 @@ exports.getAiChatSuggestions = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', error });
     }
 };
+
+exports.blockUser = async (req, res) => {
+    const currentUser = await User.findById(req.user.id);
+    const userToBlock = await User.findById(req.params.id);
+
+    if (!currentUser) {
+        return res.status(400).json({ message: 'User not found'});
+    }
+
+    if (!userToBlock) {
+        return res.status(400).json({ message: 'User not found'});
+    }
+
+    currentUser.blocked.push(req.user.id);
+    userToBlock.blockedBy.push(req.user.id);
+
+    await currentUser.save();
+    await userToBlock.save();
+
+    res.status(200).json({ response });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error });
+    }
+};
+
+exports.blacklistUser = async (req, res) => {
+    const currentUser = await User.findById(req.user.id);
+    const userToBlacklist = await User.findById(req.params.id);
+
+    if (!currentUser) {
+        return res.status(400).json({ message: 'User not found'});
+    }
+
+    if (!userToBlock) {
+        return res.status(400).json({ message: 'User not found'});
+    }
+
+    currentUser.blacklist.push(req.user.id);
+    userToBlacklist.blacklistedBy.push(req.user.id);
+
+    await currentUser.save();
+    await userToBlacklist.save();
+
+    res.status(200).json({ response });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error });
+    }
+};
